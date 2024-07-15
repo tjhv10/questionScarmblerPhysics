@@ -3,7 +3,7 @@ import random
 def read_questions(filename):
     with open(filename, 'r', encoding='utf-8') as file:
         lines = file.readlines()
-    
+
     questions = []
     question = None
     answers = []
@@ -50,11 +50,5 @@ def write_scrambled_questions(filename, scrambled_questions):
                 file.write(f"{answer} ({j+1}\n")
             file.write("\n")
 
-# קריאת שאלות מקובץ
-questions = read_questions('questions.txt')
-
-# ערבול שאלות ותשובות
-scrambled_questions = scramble_questions(questions)
-
-# כתיבת שאלות ותשובות מעורבבות לקובץ חדש
-write_scrambled_questions('scrambled_questions.txt', scrambled_questions)
+            
+write_scrambled_questions('scrambled_questions.txt', scramble_questions(read_questions('questions.txt')))
