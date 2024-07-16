@@ -1,6 +1,7 @@
 import random
 
 def read_questions(filename):
+    count =0
     with open(filename, 'r', encoding='utf-8') as file:
         lines = file.readlines()
 
@@ -14,6 +15,7 @@ def read_questions(filename):
             i += 1
             continue
         if line.startswith('[q'):
+            count+=1
             if question is not None:
                 questions.append((question_num, question, answers))
             question_num = line.split(']', 1)[0][2:]  # Extract the question number
@@ -23,16 +25,17 @@ def read_questions(filename):
             i += 1
             continue
         else:
-            if '?' not in line:
+            if '?' not in line and ':' not in line:
                 answers.append(line)
         i += 1
+    
     
     if question is not None and answers:
         questions.append((question_num, question, answers))
     
-    return questions
+    return questions,count
 
-def scramble_questions(questions, num_questions=20):
+def scramble_questions(questions, num_questions):
     selected_questions = random.sample(questions, num_questions)
     scrambled_questions = []
     
@@ -50,5 +53,7 @@ def write_scrambled_questions(filename, scrambled_questions):
                 file.write(f"{answer} ({j+1}\n")
             file.write("\n")
 
-            
-write_scrambled_questions('scrambled_questions.txt', scramble_questions(read_questions('questions.txt')))
+q,size = read_questions('questions.txt')
+print(size)
+sq = scramble_questions(q,size)
+write_scrambled_questions('scrambled_questions.txt', sq)
